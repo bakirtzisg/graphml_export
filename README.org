@@ -1,0 +1,138 @@
+
+*GraphML Export*. A plugin for MagicDraw
+and Cameo Systems Modeler that exports internal block diagrams
+and requirements diagrams to [[http://graphml.graphdrawing.org/][GraphML]] for security analysis.
+
+* Getting started
+
+These instructions will get you running the ~graphml_export~ plugin on your
+local machine for development and testing purposes.
+
+** Prerequisites
+
+- Java Development Kit (JDK)
+- MagicDraw OpenAPI
+
+Tested with Groovy 2.0.1 (MagicDraw does not fully support anything above
+that.), Gradle 2.14, java8, Cameo Systems Modeler Architect 18.4 FR, and MagicDraw
+Standard 18.3 FR.
+
+You will need java8. On macOS use homebrew:
+#+BEGIN_SRC bash
+$ brew tap caskroom/cask
+$ brew tap caskroom/versions
+$ brew cask install java8
+#+END_SRC
+
+Finally, clone this repository in a folder named =graphml_export=.
+
+** Setting Up the Installation
+
+Depending on the No Magic software package you have installed, that is
+MagicDraw vs. Cameo Systems Modeler, you will need to edit the
+~build.gradle~ file. This package assumes you have Cameo Systems
+Modeler installed. Therefore, if you have MagicDraw installed you will
+need to change the following code artifact:
+
+#+BEGIN_SRC groovy
+    magicDrawPath = '/Applications/Cameo Systems Modeler/'
+    def currentOS = System.properties['os.name'].toLowerCase()
+
+    if (currentOS.contains('windows')) {
+        magicDrawPath = 'C:\\Program Files\\Cameo Systems Modeler'
+    }
+
+    if (currentOS.contains('linux')) {
+        magicDrawPath = '~/Cameo Systems Modeler/'
+    }
+#+END_SRC
+
+To:
+
+#+BEGIN_SRC groovy
+    magicDrawPath = '/Applications/MagicDraw/'
+    def currentOS = System.properties['os.name'].toLowerCase()
+
+    if (currentOS.contains('windows')) {
+        magicDrawPath = 'C:\\Program Files\\MagicDraw'
+    }
+
+    if (currentOS.contains('linux')) {
+        magicDrawPath = '~/MagicDraw/'
+    }
+#+END_SRC
+
+This script assumes the default installation locations. If you have
+installed elsewhere you need to change the corresponding path in the
+~build.gradle~ file to the one corresponding to your installation
+path. Otherwise the plugin automatically can infer your operating
+system and set the correct installation path for your No Magic
+package.
+
+** Installing
+
+0. Make sure you have installed the JDK and that MagicDraw OpenAPI is
+   part of the installation as per the Prerequisites.
+1. Open a terminal emulator, e.g., =Terminal.app= for macOS, =urxvt=
+   for GNU/Linux, or =cmd= for Windows.
+2. Navigate to the location you cloned this repository to in your file
+   system.
+
+   #+BEGIN_SRC bash
+   cd /path/to/graphml_export   # For GNU/Linux or macOS
+   cd C:\path\to\graphml_export # For Windows
+   #+END_SRC
+3. The second and final step will be to run either of the following
+   after navigating to whatever location you cloned this repository to
+   in your file system.
+
+   #+BEGIN_SRC bash
+   ./gradlew install  # For GNU/Linux or macOS
+   gradlew install    # For Windows
+   #+END_SRC
+
+Gradle will take care of everything else at this point---including
+installing Gradle itself. You will need to restart your No Magic
+package for the plugin to take effect.
+
+At the moment the plugin has been tested under Mac OS X 10.11.6,
+Windows 7, and Arch Linux.
+
+** Unit Tests
+
+There is a minimal amount of unit tests implemented with this plugin.
+I hope to extend these to test the main functionality of the software
+in the future.
+
+The tests are run every time you install the plugin (if any test fails
+the whole installation will fail, which makes sense). To test outside
+the installation you can run:
+
+#+BEGIN_SRC bash
+./gradlew test //
+#+END_SRC
+
+** Development with IntelliJ IDEA
+
+If you want to develop further functionality or modify the
+functionality on this plugin you can do so in any editor you prefer by
+following the instructions above. However, we find it easier to use an
+IDE workflow for this specific plugin, with strong recommendation to
+IntelliJ. The only thing you need to do to import all OpenAPI
+libraries is to properly allow Gradle to do all the heavy-lifting. You
+do so by:
+
+1. Open IntelliJ
+2. Choose ~Open~
+3. Locate and choose the ~build.gradle~ file
+4. Uncheck ~Create separate module for source sets~
+5. Click ~OK~
+
+This will correctly import all the libraries, etc. In order to build
+using IntelliJ you will need to navigate
+to ~Settings → Search for gradle → Allow Gradle to do all the building~.
+
+* Authors
+
+Georgios Bakirtzis (bakirtzisg@ieee.org) [[bakirtzis.net]] \\
+Brandon Simon (simonbj@vcu.edu)

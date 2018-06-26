@@ -1,0 +1,49 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    // Default path assumes macOS and Cameo Systems Modeler
+    // If you instead use MagicDraw change the directory name to MagicDraw
+    magicDrawPath = '/Applications/Cameo Systems Modeler/'
+    def currentOS = System.properties['os.name'].toLowerCase()
+
+    if (currentOS.contains('windows')) {
+        magicDrawPath = 'C:\\Program Files\\Cameo Systems Modeler'
+    }
+
+    if (currentOS.contains('linux')) {
+        magicDrawPath = '~/Cameo Systems Modeler/'
+    }
+    pluginId = 'net.bakirtzis.exporter'
+}
+
+dependencies {
+    compile fileTree(dir: "$magicDrawPath/lib", include: '*.jar')
+    compile fileTree(dir: "$magicDrawPath/lib/bundles", include: "*.jar")
+    compile fileTree(dir: "$magicDrawPath/lib/bundles/javax.jmi_1.0.0.201601271815", include: '*.jar')
+    compile fileTree(dir: "$magicDrawPath/plugins/",
+            include: '**/*.jar',
+            excludes:['**/graphml_export.jar'])
+    compile 'org.codehaus.groovy:groovy-all:2.0.1'
+    testCompile("org.spockframework:spock-core:1.1-groovy-2.0") {
+        exclude module: "groovy-all"
+    }
+
+    testRuntime "net.bytebuddy:byte-buddy:1.6.5"          // allows mocking of classes (in addition to interfaces)
+    testRuntime "org.objenesis:objenesis:2.5.1" // allows mocking of classes without default constructor (together with CGLIB)
+}
+
+project.getTasks().create('install', Copy) { Copy task ->
+    task.destinationDir = project.file("$magicDrawPath/plugins/$pluginId")
+    task.from(tasks.getByName("jar"))
+    task.from(project.rootDir) {
+        include "plugin.xml"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}

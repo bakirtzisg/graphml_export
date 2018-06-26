@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+        id="net.bakirtzis.exporter"
+        name="GraphML Export"
+        version="0.1.0"
+        provider-name="Georgios Bakirtzis"
+        class="net.bakirtzis.exporter.GraphMLExportPlugin">
+
+  <requires>
+    <api version="1.0"/>
+  </requires>
+
+  <runtime>
+    <library name="graphml_export.jar"/>
+  </runtime>
+</plugin>
