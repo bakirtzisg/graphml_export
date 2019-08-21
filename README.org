@@ -134,5 +134,5 @@ to ~Settings → Search for gradle → Allow Gradle to do all the building~.
 
 * Authors
 
-Georgios Bakirtzis (bakirtzisg@ieee.org) [[bakirtzis.net]] \\
+Georgios Bakirtzis (bakirtzis@virginia.edu) [[bakirtzis.net]] \\
 Brandon Simon (simonbj@vcu.edu)
