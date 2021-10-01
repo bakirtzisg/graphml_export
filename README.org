@@ -1,3 +1,4 @@
+/This software is no longer maintained and there are no plans for a future release./
 
 *GraphML Export*. A plugin for MagicDraw
 and Cameo Systems Modeler that exports internal block diagrams
